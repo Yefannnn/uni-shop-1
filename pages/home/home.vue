@@ -11,6 +11,11 @@
         </navigator>
       </swiper-item>
     </swiper>
+    <view class="nav-list">
+      <view class="nav-item" v-for="(item, i) in navList" :key="i" @click="navClickHandler(item)">
+        <image :src="item.image_src" class="nav-img"></image>
+      </view>
+    </view>
     <!-- 楼层区域 -->
     <view class="floor-list">
       <!-- 楼层 item 项 -->
@@ -45,6 +50,8 @@
       return {
         // 轮播图的数据节点
         swiperList: [],
+        // 1. 分类导航的数据列表
+        navList: [],
         // 楼层数据
         floorList: [],
       };
@@ -52,6 +59,8 @@
     onLoad() {
       // 调用swiper轮播图请求
       this.getSwiperList()
+      // 2. 在 onLoad 中调用获取数据的方法
+      this.getNavList()
       // 调用楼层请求
       this.getFloorList()
     },
@@ -67,6 +76,24 @@
         }
         // 请求成功
         this.swiperList = data.message
+      },
+      // 获取分类列表的数据
+      async getNavList() {
+        const {
+          data: res
+        } = await uni.$http.get('/api/public/v1/home/catitems')
+        // 请求出错，提示用户
+        if (res.meta.status !== 200) return uni.$showMsg()
+        // 将请求回来的数据转存到data中
+        this.navList = res.message
+      },
+      navClickHandler(item) {
+        // 如果是点击了分类，那就切换到tarbar--分类栏
+        if (item.name === '分类') {
+          uni.switchTab({
+            url: '/pages/cate/cate'
+          })
+        }
       },
       // 获取楼层数据
       async getFloorList() {
@@ -114,5 +141,16 @@
   .floor-img-box {
     display: flex;
     padding-left: 10rpx;
+  }
+
+  .nav-list {
+    display: flex;
+    justify-content: space-around;
+    margin: 15px 0;
+
+    .nav-img {
+      width: 128rpx;
+      height: 140rpx;
+    }
   }
 </style>
