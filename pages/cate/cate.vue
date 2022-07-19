@@ -1,5 +1,7 @@
 <template>
   <view>
+    <!-- 使用自定义的搜索组件 -->
+    <my-search @click="gotoSearch"></my-search>
     <view class="scroll-view-container">
       <!-- 左侧的滚动视图区域 -->
       <scroll-view class="left-scroll-view" scroll-y :scroll-top="scrollTop" :style="{height: wh + 'px'}">
@@ -48,12 +50,19 @@
         scrollTop: 0
       };
     },
-    onLoad() {
+    onShow() {
       this.getCateList()
       // 获取当前系统的信息
       const sysInfo = uni.getSystemInfoSync()
       // 为 wh 窗口可用高度动态赋值
       this.wh = sysInfo.windowHeight
+    },
+    onLoad() {
+      this.getCateList()
+      // 获取当前系统的信息
+      const sysInfo = uni.getSystemInfoSync()
+      // 为 wh 窗口可用高度动态赋值
+      this.wh = sysInfo.windowHeight - 50
     },
     methods: {
       // 获取分类的数据
@@ -78,14 +87,19 @@
             return this.cateLevel2 = item.children
           }
         })
-        console.log(this.cateLevel2);
+      },
+      gotoGoodsList(item3) {
+        uni.navigateTo({
+          url: '/subpkg/goods_list/goods_list?cid=' + item3.cat_id
+        })
+      },
+      gotoSearch() {
+        uni.navigateTo({
+          url: '/subpkg/search/search'
+        })
       }
     },
-    gotoGoodsList(item3) {
-      uni.navigateTo({
-        url: '/subpkg/goods_list/goods_list?cid=' + item3.cat_id
-      })
-    }
+
   }
 </script>
 

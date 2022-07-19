@@ -1,5 +1,9 @@
 <template>
   <view>
+    <!-- 使用自定义的搜索组件 -->
+    <view class="search-box">
+      <my-search @click="gotoSearch"></my-search>
+    </view>
     <!-- 轮播图区域 -->
     <swiper :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000" :circular="true">
       <!-- 循环渲染轮播图的 item 项 -->
@@ -56,6 +60,9 @@
         floorList: [],
       };
     },
+    onShow() {
+      this.getSwiperList()
+    },
     onLoad() {
       // 调用swiper轮播图请求
       this.getSwiperList()
@@ -111,7 +118,13 @@
         // 转存楼层数据
         this.floorList = res.message
       },
-    }
+      gotoSearch() {
+        uni.navigateTo({
+          url: '/subpkg/search/search'
+        })
+      }
+    },
+
   }
 </script>
 
@@ -152,5 +165,14 @@
       width: 128rpx;
       height: 140rpx;
     }
+  }
+
+  .search-box {
+    // 设置定位效果为“吸顶”
+    position: sticky;
+    // 吸顶的“位置”
+    top: 0;
+    // 提高层级，防止被轮播图覆盖
+    z-index: 999;
   }
 </style>

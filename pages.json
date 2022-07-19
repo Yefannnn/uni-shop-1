@@ -71,14 +71,23 @@
     "pages": [{
       "path": "goods_detail/goods_detail",
       "style": {
-        "navigationBarTitleText": "",
+        "navigationBarTitleText": "商品详情",
         "enablePullDownRefresh": false
       }
 
     }, {
       "path": "goods_list/goods_list",
       "style": {
-        "navigationBarTitleText": "",
+        "navigationBarTitleText": "商品列表",
+        "enablePullDownRefresh": true,
+        "backgroundColor": "#F8F8F8",
+        "onReachBottomDistance": 150
+      }
+
+    }, {
+      "path": "search/search",
+      "style": {
+        "navigationBarTitleText": "搜索",
         "enablePullDownRefresh": false
       }
 
