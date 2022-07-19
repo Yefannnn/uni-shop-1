@@ -31,7 +31,7 @@
         // 默认的空图片
         defaultPic: 'https://t7.baidu.com/it/u=4162611394,4275913936&fm=193&f=GIF',
         // 是否正在请求数据
-        isloading: false
+        isloading: false,
       };
     },
     onLoad(options) {
