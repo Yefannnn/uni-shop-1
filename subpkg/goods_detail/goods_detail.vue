@@ -40,7 +40,18 @@
 </template>
 
 <script>
+  // 从 vuex 中按需导出 mapState 辅助方法
+  import {
+    mapState,
+    mapMutations,
+    mapGetters
+  } from 'vuex'
   export default {
+    computed: {
+      // 将m_cart模块中的cart数据映射到组件中，这里面可以访问到关于购物车详情
+      ...mapState('m_cart', ['cart']),
+      ...mapGetters(['total'])
+    },
     data() {
       return {
         // 商品详情对象
@@ -52,7 +63,7 @@
         }, {
           icon: 'cart',
           text: '购物车',
-          info: 2
+          info: this.total
         }],
         // 右侧按钮组的配置对象
         buttonGroup: [{
@@ -112,8 +123,49 @@
           })
         }
       },
-      buttonClick() {
-
+      async buttonClick(e) {
+        // console.log(e);
+        // 通过e.content.text判断出点击是哪一个按钮
+        if (e.content.text === '加入购物车') {
+          const goods = {
+            goods_id: this.goods_info.goods_id, // 商品的Id
+            goods_name: this.goods_info.goods_name, // 商品的名称
+            goods_price: this.goods_info.goods_price, // 商品的价格
+            goods_count: 1, // 商品的数量
+            goods_small_logo: this.goods_info.goods_small_logo, // 商品的图片
+            goods_state: true // 商品的勾选状态
+          }
+          // 将数据提交到store中
+          await this.addToCart(goods)
+          // 购物车中的数据一份存store 一份存 本地
+          await this.saveToStorage()
+        }
+      },
+      // 把 m_cart 模块中的 addToCart 方法映射到当前页面使用
+      ...mapMutations('m_cart', ['addToCart', 'saveToStorage']),
+      onShow() {
+        // 在页面刚展示的时候，设置数字徽标
+        this.setBadge()
+      },
+      // 这是徽标
+      setBadge() {
+        uni.setTabBarBadge({
+          index: 2, // 索引
+          text: this.total + '' // 注意：text 的值必须是字符串，不能是数字
+        })
+      }
+    },
+    watch: {
+      // 通过监听total数据的变化，来动态改变购物车上面的徽标
+      total: {
+        handler(newval) {
+          this.options.forEach(item => {
+            if (item.text === '购物车') {
+              item.info === newval
+            }
+          })
+        },
+        immediate: true
       }
     }
   }
