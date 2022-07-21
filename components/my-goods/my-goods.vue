@@ -42,6 +42,9 @@
         default: false,
       },
     },
+    onLoad() {
+      console.log('goods', this.goods);
+    },
     data() {
       return {
         // 默认的空图片

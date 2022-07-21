@@ -9,7 +9,7 @@ export default {
     // state 数据库  good 商品信息，将提交过来的信息更新到数据库中
     addToCart(state, goods) {
       // 如果找到对应的商品就会返回对应的商品详情，如果没有对应的商品，就会返回undefinded
-      const findResult = state.cart.find(x => x.goods_id === goods.goods._id)
+      const findResult = state.cart.find(x => x.goods_id === goods.goods_id)
       if (!findResult) {
         state.cart.push(goods)
       } else {
@@ -54,7 +54,7 @@ export default {
     },
     // 更新商品的状态
     updateAllGoodsState(state, newState) {
-      state.cart = state.cart.map(item => item.goods_state = newState)
+      state.cart.forEach(item => item.goods_state = newState)
       // 持久化存储到本地
       this.commit('m_cart/saveToStorage')
     }

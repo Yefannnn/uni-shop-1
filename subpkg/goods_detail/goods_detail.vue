@@ -5,7 +5,6 @@
       <swiper-item v-for="(item, i) in goods_info.pics" :key="i">
         <image :src="item.pics_big" @click="preview(i)"></image>
       </swiper-item>
-
     </swiper>
     <!-- 商品信息区域 -->
     <view class="goods-info-box ">
@@ -63,7 +62,7 @@
         }, {
           icon: 'cart',
           text: '购物车',
-          info: this.total
+          info: 0
         }],
         // 右侧按钮组的配置对象
         buttonGroup: [{
@@ -161,7 +160,8 @@
         handler(newval) {
           this.options.forEach(item => {
             if (item.text === '购物车') {
-              item.info === newval
+              item.info = newval
+              // console.log(newval);
             }
           })
         },

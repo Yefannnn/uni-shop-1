@@ -19,15 +19,16 @@ export default new Vuex.Store({
     // 创建全局购物车数量total的快捷访问
     total(state) {
       let count = 0
-      state.m_cart.cart.forEach(goods => {
-        count += goods.goods_count
+      state.m_cart.cart.forEach(item => {
+        if (item) {
+          count += Number(item.goods_count)
+        }
       })
       return count
     },
     // 全局可用的address
     // 收货详细地址的计算属性
     addstr(state) {
-      console.log(state.address);
       if (!state.m_user.address.provinceName) return ''
 
       // 拼接 省，市，区，详细地址 的字符串并返回给用户
